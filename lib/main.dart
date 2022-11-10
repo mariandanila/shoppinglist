@@ -12,7 +12,7 @@ import 'package:grocery_app/screens/HomeScreen.dart';
 void main() {
   runApp(MaterialApp(initialRoute: '/', routes: {
     '/': (context) => const HomeScreen(),
-    '/details': (context) => const DetailsScreen()
+    '/details': (context) => DetailsScreen(),
   }
 //    home: HomeScreen(),
       ));
