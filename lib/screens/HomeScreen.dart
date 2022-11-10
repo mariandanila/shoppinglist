@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/screens/DetailsScreen.dart';
 
 import '../models/GroceryModel.dart';
 
@@ -10,62 +11,137 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> groceries = ['Apples', 'Oranges', 'Bananas'];
-  List<double> prices = [1.03, 2.08, 1.73];
   final groceriesItem = TextEditingController();
+  final groceriesPrice = TextEditingController(text: '0.00');
   List<GroceryItem> listOfItems = [];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     groceriesItem.dispose();
+    groceriesPrice.dispose();
     super.dispose();
   }
 
-  void addItemToGroceryList() {
-    setState(() {
-      groceries.add(groceriesItem.text);
-      prices.add(1.00);
-    });
+  void addItemToGroceryList(GlobalKey<FormState> formKey) {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      setState(
+        () {
+          listOfItems.add(
+            GroceryItem(
+              name: groceriesItem.text,
+              price: double.parse(groceriesPrice.text),
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Expanded(
-              child: TextField(controller: groceriesItem),
-            ),
-            ElevatedButton(
-              child: const Icon(Icons.add),
-              onPressed: () => addItemToGroceryList(),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.amberAccent,
+        toolbarHeight: 40,
+        title: Text('Grocery List'),
+        centerTitle: true,
+        actions: [
+          Container(
+            width: 30,
+            height: 30,
+            color: Colors.red,
+          )
+        ],
       ),
-      body: ListView.builder(
-        itemCount: groceries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: ListTile(
-              title: Text(groceries[index]),
-              trailing: Text('\$${prices[index]}'),
-            ),
-          );
-        },
+      body: SingleChildScrollView(
+        child: Container(
+          height: height,
+          margin: EdgeInsets.only(left: 16, right: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 40,
+              ),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                    controller: groceriesItem,
+                    decoration: InputDecoration(
+                      hintText: 'Enter item',
+                    ),
+                    validator: (String? text) {
+                      if (text == null || text.isEmpty) {
+                        return 'Text is empty';
+                      }
+                      return null;
+                    }),
+              ),
+              TextField(
+                controller: groceriesPrice,
+                decoration: InputDecoration(labelText: 'Enter price'),
+              ),
+              ElevatedButton(
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  addItemToGroceryList(_formKey);
+                },
+              ),
+              Container(
+                // width: width,
+                child: Center(
+                  child: Text(
+                    "List",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: height * 0.4,
+                child: ListView.builder(
+                  itemCount: listOfItems.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(listOfItems[index].name),
+                        trailing: Text('\$${listOfItems[index].price}'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsScreen(item: listOfItems[index]),
+                              settings:
+                                  RouteSettings(arguments: listOfItems[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      bottomNavigationBar: NavigationBar(destinations: [
-        NavigationDestination(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-        ),
-      ]),
+      // bottomNavigationBar: NavigationBar(destinations: [
+      //   NavigationDestination(
+      //     icon: Icon(Icons.person),
+      //     label: 'Profile',
+      //   ),
+      //   NavigationDestination(
+      //     icon: Icon(Icons.settings),
+      //     label: 'Settings',
+      //   ),
+      // ]),
     );
   }
 }

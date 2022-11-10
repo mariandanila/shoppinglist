@@ -3,7 +3,7 @@ class GroceryItem {
   final double price;
 
   GroceryItem({
-    required this.name,
-    required this.price,
+    this.name = '',
+    this.price = 0.00,
   });
 }

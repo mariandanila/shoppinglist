@@ -1,4 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/GroceryModel.dart';
+import 'package:grocery_app/screens/DetailsScreen.dart';
 import 'package:grocery_app/screens/HomeScreen.dart';
 
 //to do: un alt imput pentru pret de tipul double
@@ -6,7 +10,10 @@ import 'package:grocery_app/screens/HomeScreen.dart';
 //optiune de stergere pentru un item
 
 void main() {
-  runApp(MaterialApp(
-    home: HomeScreen(),
-  ));
+  runApp(MaterialApp(initialRoute: '/', routes: {
+    '/': (context) => const HomeScreen(),
+    '/details': (context) => const DetailsScreen()
+  }
+//    home: HomeScreen(),
+      ));
 }
