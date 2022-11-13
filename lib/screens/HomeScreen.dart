@@ -38,6 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+//trebuie verificat daca itemul este in lista
+//se identifica itemul selectat
+  void deleteItem(String name) {
+    for (var i = 0; i <= listOfItems.length; i++) {
+      if (listOfItems[i].name == name) {
+        listOfItems.remove(listOfItems[i]);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -69,16 +79,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Form(
                 key: _formKey,
                 child: TextFormField(
-                    controller: groceriesItem,
-                    decoration: InputDecoration(
-                      hintText: 'Enter item',
-                    ),
-                    validator: (String? text) {
-                      if (text == null || text.isEmpty) {
-                        return 'Text is empty';
-                      }
-                      return null;
-                    }),
+                  controller: groceriesItem,
+                  decoration: InputDecoration(
+                    hintText: 'Enter item',
+                  ),
+                  validator: (String? text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Text is empty';
+                    }
+                    return null;
+                  },
+                ),
               ),
               TextField(
                 controller: groceriesPrice,
@@ -105,27 +116,37 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 height: height * 0.4,
-                child: ListView.builder(
-                  itemCount: listOfItems.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(listOfItems[index].name),
-                        trailing: Text('\$${listOfItems[index].price}'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsScreen(item: listOfItems[index]),
-                              settings:
-                                  RouteSettings(arguments: listOfItems[index]),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: listOfItems.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(listOfItems[index].name),
+                          trailing: Text('\$${listOfItems[index].price}'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DetailsScreen(),
+                                  settings: RouteSettings(
+                                    arguments: listOfItems[index],
+                                  )),
+                            );
+                            //Navigator.of(context).pushNamed(
+                            //  '/details', arguments: listOfItems,
+                            // MaterialPageRoute(
+                            //   builder: (context) =>
+                            //       DetailsScreen(item: listOfItems[index]),
+                            //   settings:
+                            //       RouteSettings(arguments: listOfItems[index]),
+                            //                ),
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
