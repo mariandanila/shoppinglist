@@ -121,28 +121,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: listOfItems.length,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(listOfItems[index].name),
-                          trailing: Text('\$${listOfItems[index].price}'),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DetailsScreen(),
-                                  settings: RouteSettings(
-                                    arguments: listOfItems[index],
-                                  )),
-                            );
-                            //Navigator.of(context).pushNamed(
-                            //  '/details', arguments: listOfItems,
-                            // MaterialPageRoute(
-                            //   builder: (context) =>
-                            //       DetailsScreen(item: listOfItems[index]),
-                            //   settings:
-                            //       RouteSettings(arguments: listOfItems[index]),
-                            //                ),
-                          },
+                      //swipe to delete
+                      final item = listOfItems[index].name;
+                      return Dismissible(
+                        key: Key(item),
+                        onDismissed: (direction) {
+                          setState(() {
+                            listOfItems.removeAt(index);
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('$item deleted')));
+                        },
+                        background:
+                            Container(color: Color.fromARGB(255, 136, 68, 68)),
+                        child: Card(
+                          child: ListTile(
+                            title: Text(listOfItems[index].name),
+                            trailing: Text('\$${listOfItems[index].price}'),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DetailsScreen(),
+                                    settings: RouteSettings(
+                                      arguments: listOfItems[index],
+                                    )),
+                              );
+                              //Navigator.of(context).pushNamed(
+                              //  '/details', arguments: listOfItems,
+                              // MaterialPageRoute(
+                              //   builder: (context) =>
+                              //       DetailsScreen(item: listOfItems[index]),
+                              //   settings:
+                              //       RouteSettings(arguments: listOfItems[index]),
+                              //                ),
+                            },
+                          ),
                         ),
                       );
                     },
