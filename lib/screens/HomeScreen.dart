@@ -147,14 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       arguments: listOfItems[index],
                                     )),
                               );
-                              //Navigator.of(context).pushNamed(
-                              //  '/details', arguments: listOfItems,
-                              // MaterialPageRoute(
-                              //   builder: (context) =>
-                              //       DetailsScreen(item: listOfItems[index]),
-                              //   settings:
-                              //       RouteSettings(arguments: listOfItems[index]),
-                              //                ),
                             },
                           ),
                         ),

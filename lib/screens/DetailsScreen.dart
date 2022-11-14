@@ -45,7 +45,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final itemToModify = ModifyItem(
         name: groceriesItem.text, price: double.parse(groceriesPrice.text));
 
-    void deleteItem() {
+    void modifyItem() {
       Navigator.of(context).pop(itemToModify);
     }
 
@@ -56,35 +56,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
           leading: const BackButton(
             color: Colors.black,
           ),
-//        leading: Builder(builder: (BuildContext context) {
-//          return IconButton(onPressed: onPressed, icon: icon)
-//        }
           actions: [
             Container(
-                width: 30,
+                width: 60,
                 height: 30,
-                color: Colors.red,
                 child: IconButton(
                   icon: Icon(
                     Icons.save,
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    deleteItem();
+                    modifyItem();
                   },
                 ))
           ]),
       body: Column(children: [
         TextFormField(
           controller: groceriesItem,
-//          initialValue: details.name,
           decoration: const InputDecoration(
             hintText: 'Edit item\'s name',
           ),
         ),
         TextFormField(
           controller: groceriesPrice,
-//          initialValue: item.price.toString(),
           decoration: const InputDecoration(
             hintText: 'Edit item\'s price',
           ),

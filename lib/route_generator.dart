@@ -17,9 +17,9 @@ class RouteGenerator {
 //                    item: args
 //                  ));
     }
-    return _errorRoute();
+//    return _errorRoute();
 //    default:
-//        return _errorRoute();
+    return _errorRoute();
   }
 }
 
