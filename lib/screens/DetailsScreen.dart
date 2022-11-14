@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_app/bloc/items_bloc.dart';
 import 'package:grocery_app/models/GroceryModel.dart';
 import 'package:grocery_app/screens/HomeScreen.dart';
 
-class DetailsScreenArguments {
-  final GroceryItem item;
-  final Function(String name) deleteItem;
+// class DetailsScreenArguments {
+//   final GroceryItem item;
+//   // final Function(int id) deleteItem;
 
-  DetailsScreenArguments({
-    required this.item,
-    required this.deleteItem,
-  });
-}
+//   DetailsScreenArguments({
+//     required this.item,
+//     // required this.deleteItem,
+//   });
+// }
 
 class ModifyItem {
   final String name;
@@ -49,6 +51,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
       Navigator.of(context).pop(itemToModify);
     }
 
+    void deleteItem(int id) {
+      context.read<ItemsBloc>().add(
+            RemoveItem(id),
+          );
+    }
+
+    void popRoute() {
+      Navigator.of(context).pop();
+    }
+
     return Scaffold(
       appBar: AppBar(
           title: Text('Edit item'),
@@ -82,7 +94,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
           decoration: const InputDecoration(
             hintText: 'Edit item\'s price',
           ),
-        )
+        ),
+        ElevatedButton(
+            onPressed: () {
+              deleteItem(details.id);
+              popRoute();
+              setState(() {});
+            },
+            child: const Icon(Icons.remove))
       ]),
     );
   }
