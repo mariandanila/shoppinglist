@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_app/infrastructure/list_bloc.dart';
 import 'package:grocery_app/screens/DetailsScreen.dart';
 import 'package:grocery_app/screens/HomeScreen.dart';
 import 'package:grocery_app/main.dart';
@@ -9,7 +11,11 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => HomeScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => ItemsBloc(),
+                  child: const HomeScreen(),
+                ));
 //      case '/details':
 //        if (args is String) {
 //          return MaterialPageRoute(
